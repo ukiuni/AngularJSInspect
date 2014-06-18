@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.13/angular.min.js"></script>
+<script type="text/javascript">
+	var TodoController = function($scope, $http) {
+		$http.get('api/loadMemos').success(function(data, status, headers, config) {
+			$scope.memos = data
+		}).error(function(data, status, headers, config) {
+			$scope.accessError = "error occur";
+		});
+		$scope.addMemo = function() {
+			$scope.memos.push({});
+		}
+		$scope.save = function() {
+			$http.put("api/putMemos", $scope.memos)
+		}
+	}
+</script>
+</head>
+<body>
+	Memo
+	<div ng-controller="TodoController">
+		<div ng-repeat="memo in memos">
+			<input type~"text" ng-model="memo.text">
+		</div>
+		<button ng-click="addMemo()">add</button>
+		<br />
+		<button ng-click="save()">save</button>
+		<span style="color: red">{{accessError}}</span>
+	</div>
+</body>
+</html>
